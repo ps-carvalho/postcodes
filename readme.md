@@ -36,6 +36,16 @@ symfony console PostCodes:ImportPostCodesData
 
 symfony console --env=test PostCodes:ImportPostCodesData
 
+This can be a time-consuming task as it contains 120 pages with postcodes and more than 1.7 Million
+entries to be added to database.
+As an alternative you can pass and argument and choose a number between 1 and 120 and limit the number of post codes .
+This is better for quick tests.
+
 ### **Run Unit test**
 
 php ./vendor/bin/phpunit
+
+### **Using the Application**
+
+You can just use the browser to test the application.
+open http://localhost:8080/locations

@@ -1,18 +1,17 @@
 <?php
 namespace App\Command;
-
-ini_set('memory_limit', '-1');
-
+ini_set('memory_limit', '-1'); // This is only here to avoid running out of memory,
+// this sort of configuration should be added in the correct ini file.
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
+
 use App\Entity\Location;
 
 #[AsCommand(
@@ -37,17 +36,30 @@ class ImportPostCodesDataCommand extends Command
             'number-pages',
             InputArgument::OPTIONAL,
             'Number pages to import between (120) available',
-            4);
+            120);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $numberOfPages = $input->getArgument('number-pages');
+        if($numberOfPages === 0) {
+            $io->error('must have at least 1 page to import.');
+            return Command::FAILURE;
+        }
+        if($numberOfPages > 120) {
+            $io->error('cant have more that 120 as the number of pages to import.');
+            return Command::FAILURE;
+        }
+        // creates a new progress bar
+        $progressBar = new ProgressBar($output, $numberOfPages);
+
+        // starts and displays the progress bar
+        $progressBar->start();
 
         $io->note('Migrating Post Codes total of ('.$numberOfPages.'/120) pages');
 
-        $this->importData($numberOfPages);
+        $this->importData($numberOfPages, $progressBar);
 
         $io->success('Migration completed');
 
@@ -55,12 +67,12 @@ class ImportPostCodesDataCommand extends Command
     }
 
 
-    public function importData($numberOfPages)
+    public function importData($numberOfPages, $progressBar)
     {
         $root =$this->params->get('temp_storage').'/Data/CSV';
         $files = array_diff(scandir($root),['..', '.']);
         $pages = [];
-        $counter = 0;
+        $counter = 1;
         while($counter <= $numberOfPages){
             shuffle($files);
             $pages[] = array_pop($files);
@@ -81,6 +93,8 @@ class ImportPostCodesDataCommand extends Command
                 fclose($fp);
             }
             $this->entityManager->flush();
+            $progressBar->advance();
         }
+        $progressBar->finish();
     }
 }

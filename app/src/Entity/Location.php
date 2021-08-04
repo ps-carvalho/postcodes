@@ -45,6 +45,8 @@ class Location implements JsonSerializable
      */
     private $longitude;
 
+    private $distance;
+
 
 
     public function getId(): ?int
@@ -157,13 +159,34 @@ class Location implements JsonSerializable
         return  (new CoordinatesConverter($this->getEastings(), $this->getNorthings()))->Convert();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getDistance()
+    {
+        return $this->distance;
+    }
+
+    /**
+     * @param float $distance
+     * @return Location
+     */
+    public function setDistance(float $distance): self
+    {
+        $this->distance = $distance;
+        return $this;
+    }
+
+
+
     public function jsonSerialize()
     {
-       return [
+        return  [
            'id' => $this->getId(),
            'postCode' => $this->getPostCode(),
            'lat' => $this->getLatitude(),
            'long' => $this->getLongitude(),
-       ];
+           'distance' => $this->getDistance() > 0 ? $this->getDistance() : 0
+            ];
     }
 }

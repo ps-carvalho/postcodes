@@ -19,35 +19,6 @@ class LocationRepository extends ServiceEntityRepository
         parent::__construct($registry, Location::class);
     }
 
-    // /**
-    //  * @return PostCode[] Returns an array of PostCode objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?PostCode
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
     /**
      * @return Location[]
      */
@@ -84,7 +55,7 @@ class LocationRepository extends ServiceEntityRepository
                     COS(:latitude * PI() / 180) * COS(location.latitude * PI() / 180) *
                     COS((:longitude - location.longitude) * PI() / 180)) * 180 / PI()
                     ) * :unit )
-            AS distance FROM location HAVING distance <= :radius ORDER BY distance ASC";
+            AS distance FROM location HAVING distance <= :radius ORDER BY distance ASC LIMIT 20";
         $stmt = $conn->prepare($sql);
         $result = $stmt->executeQuery(
             [
@@ -104,6 +75,7 @@ class LocationRepository extends ServiceEntityRepository
            $object->setNorthings($result['northings']);
            $object->setLongitude();
            $object->setLatitude();
+           $object->setDistance($result['distance']);
            $resultData[] = $object;
        }
        return $resultData;
