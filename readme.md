@@ -1,8 +1,11 @@
-### **Build and boot infrastructure with docker-compose **
+### Build and boot infrastructure with docker-compose 
 docker-compose up -d --build
 
-### ** SSH into the PHP container**
+###  SSH into the PHP container
 docker-compose exec php /bin/bash
+
+----
+_**All commands bellow are assumed to be inside PHP container**_
 
 ### **Install vendor packages**
 
@@ -45,7 +48,11 @@ This is better for quick tests.
 
 php ./vendor/bin/phpunit
 
+---
+
 ### **Using the Application**
 
-You can just use the browser to test the application.
+You can just use the browser or use something like postman to test the application.
 open http://localhost:8080/locations
+
+Instructions will be found in the response body.
