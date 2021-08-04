@@ -10,4 +10,4 @@
 ###< symfony/framework-bundle ###
 
 /mysql/*
-/.idea/*
+/.idea/
