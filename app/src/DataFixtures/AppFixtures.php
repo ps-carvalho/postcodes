@@ -12,9 +12,9 @@ class AppFixtures extends Fixture
     {
          $location = new Location();
          $location->setId(1);
-         $location->setPostCode('bh192qt');
-         $location->setEastings(12345);
-         $location->setNorthings(12345);
+         $location->setPostCode('WC1A1AB');
+         $location->setEastings(530186);
+         $location->setNorthings(181384);
          $location->setLongitude();
          $location->setLatitude();
          $manager->persist($location);
