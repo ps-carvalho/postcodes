@@ -55,7 +55,7 @@ class LocationRepository extends ServiceEntityRepository
                     COS(:latitude * PI() / 180) * COS(location.latitude * PI() / 180) *
                     COS((:longitude - location.longitude) * PI() / 180)) * 180 / PI()
                     ) * :unit )
-            AS distance FROM location HAVING distance <= :radius ORDER BY distance ASC LIMIT 20";
+            AS distance FROM location HAVING distance <= :radius ORDER BY distance ASC LIMIT 200";
         $stmt = $conn->prepare($sql);
         $result = $stmt->executeQuery(
             [
