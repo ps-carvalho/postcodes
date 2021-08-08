@@ -21,12 +21,11 @@ class LocationsController extends AbstractController
     #[Route('/locations', name: 'locations', methods: 'GET')]
     public function locations(Request $request, LocationRepository $locationRepository): Response
     {
-        $postCodeDto = new PostCodeDto($request);
         $data = [];
+        $postCodeDto = new PostCodeDto($request);
         if($postCodeDto->isEmpty()) {
             return $this->json(new WelcomeApiResponse());
         }
-
         if($postCodeDto->getPostCode()) {
             $data = $locationRepository->findAllMatchingPartialPostcode($postCodeDto->getPostCode());
             if(empty($data)){
