@@ -2,6 +2,10 @@
 
 namespace App\Dto;
 
+
+
+use Symfony\Component\HttpFoundation\Request;
+
 class PostCodeDto extends Dto
 {
 
@@ -17,8 +21,8 @@ class PostCodeDto extends Dto
 
     private $empty = true;
 
-    public function __construct(){
-        parent:: __construct();
+    public function __construct(Request $request){
+        parent:: __construct($request);
         if(!empty($this->getRequest()->getQueryString())) {
             $this->setPostCode(
                 $this->getRequest()->get('postcode', null)

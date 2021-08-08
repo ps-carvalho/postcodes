@@ -7,16 +7,21 @@ use App\Repository\LocationRepository;
 use App\Responses\ApiResponse;
 use App\Responses\WelcomeApiResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class LocationsController extends AbstractController
 {
+    #[Route('/', name: 'index', methods: 'GET')]
+    public function index(){
+        return new RedirectResponse('/locations');
+    }
     #[Route('/locations', name: 'locations', methods: 'GET')]
-    public function index(
-        LocationRepository $locationRepository,
-        PostCodeDto        $postCodeDto): Response
+    public function locations(Request $request, LocationRepository $locationRepository): Response
     {
+        $postCodeDto = new PostCodeDto($request);
         $data = [];
         if($postCodeDto->isEmpty()) {
             return $this->json(new WelcomeApiResponse());
@@ -62,4 +67,6 @@ class LocationsController extends AbstractController
             200
         ));
     }
+
+
 }

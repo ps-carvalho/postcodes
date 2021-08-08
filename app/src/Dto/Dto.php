@@ -8,9 +8,9 @@ class Dto
 {
     private Request $request;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->setRequest(Request::createFromGlobals());
+        $this->setRequest($request);
     }
 
     /**
