@@ -39,12 +39,27 @@ class LocationsController extends AbstractController
                             'unit' => $postCodeDto->getUnit(),
                         ],
                         'result' => 'No post code available similar to : '. $postCodeDto->getPostCode(),
-                    ],
-                    200
-                ));
+                    ]
+                ),
+                );
             }
         }
-        if(!$postCodeDto->getPostCode() && $postCodeDto->getRadius() != 0) {
+        if(!$postCodeDto->getPostCode()) {
+            if( $postCodeDto->getLatitude() != 0 && $postCodeDto->getLongitude() != 0 ){
+                return $this->json(new ApiResponse(
+                    [
+                        'parameters' => [
+                            'postcode' => $postCodeDto->getPostCode(),
+                            'radius' => $postCodeDto->getRadius(),
+                            'latitude' => $postCodeDto->getLatitude(),
+                            'longitude' => $postCodeDto->getLongitude(),
+                            'unit' => $postCodeDto->getUnit(),
+                        ],
+                        'result' => 'Incorrect set of parameters',
+                    ],
+                    ['Please use only latitude or longitude not both']
+                ), 400);
+            }
             $data = $locationRepository->findAllLocationsByProximity(
                 $postCodeDto->getLatitude(),
                 $postCodeDto->getLongitude(),
@@ -52,6 +67,7 @@ class LocationsController extends AbstractController
                 $postCodeDto->getUnit()
             );
         }
+
         return $this->json(new ApiResponse(
             [
                 'parameters' =>[
@@ -62,8 +78,7 @@ class LocationsController extends AbstractController
                     'unit' => $postCodeDto->getUnit(),
                 ],
                 'result' => $data,
-            ],
-            200
+            ]
         ));
     }
 

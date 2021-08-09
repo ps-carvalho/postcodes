@@ -18,6 +18,7 @@ class AppFixtures extends Fixture
          $location->setLongitude();
          $location->setLatitude();
          $manager->persist($location);
+
         $manager->flush();
     }
 }

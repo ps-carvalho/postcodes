@@ -24,9 +24,8 @@ class ApiResponse implements \JsonSerializable
     /**
      *
      */
-    public function __construct($data = '', $status = 200, $errors = [], $messages = []){
+    public function __construct($data = '', $errors = [], $messages = []){
         $this->setData($data);
-        $this->setStatus($status);
         $this->setErrors($errors);
         $this->setMessages($messages);
     }

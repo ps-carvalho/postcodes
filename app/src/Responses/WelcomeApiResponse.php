@@ -19,8 +19,6 @@ class WelcomeApiResponse extends ApiResponse
             'examples' => [
                 'postcode-example' => 'http://localhost:8080/locations?postcode=bh192qt',
                 'partial-postcode-example' => 'http://localhost:8080/locations?postcode=bh19',
-                'lat-long-radius-example'
-                => 'http://localhost:8080/locations?lat=50.606122086912&long=-1.9708572830129&radius=0.2&unit=mi',
                 'lat-radius-example'
                 => 'http://localhost:8080/locations?lat=50.606122086912&radius=0.2&unit=mi',
                 'long-radius-example'

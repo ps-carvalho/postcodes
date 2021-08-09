@@ -40,7 +40,15 @@ class LocationRepository extends ServiceEntityRepository
      */
     public function findAllLocationsByProximity($latitude, $longitude, $radius, $units = 'mi')
     {
-        $found = $this->findLocationByLatitudeOrLongitude($latitude, $longitude);
+        $found = false;
+
+        if($latitude != 0 ) {
+            $found = $this->findLocationByLatitude($latitude);
+        }
+        if($longitude != 0 ){
+            $found = $this->findLocationByLongitude($longitude);
+        }
+
         if($found){
             $latitude  = $found->getLatitude();
             $longitude = $found->getLongitude();
@@ -81,27 +89,32 @@ class LocationRepository extends ServiceEntityRepository
        return $resultData;
     }
 
-    private function findLocationByLatitudeOrLongitude($latitude, $longitude){
-        if($latitude != 0) {
-            $query = $this->getEntityManager()->createQuery(
-                'SELECT p
-            FROM App\Entity\Location p 
-            ORDER BY ABS(p.latitude - :latitude)'
-            )->setParameter('latitude', $latitude)->setMaxResults(1);
-            $found = $query->getResult();
-        }
-        if($longitude != 0) {
-            $query = $this->getEntityManager()->createQuery(
-                'SELECT p
-            FROM App\Entity\Location p 
-            ORDER BY ABS(p.longitude - :longitude)'
-            )->setParameter('longitude', $longitude)->setMaxResults(1);
-            $found = $query->getResult();
-        }
+    private function findLocationByLatitude($latitude){
 
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT p
+        FROM App\Entity\Location p 
+        ORDER BY ABS(p.latitude - :latitude)'
+        )->setParameter('latitude', $latitude)->setMaxResults(1);
+        $found = $query->getResult();
 
         if(isset($found[0]) && $found[0] instanceof Location){
            return $found[0];
+        }
+        return null;
+    }
+
+    private function findLocationByLongitude($longitude){
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT p
+        FROM App\Entity\Location p 
+        ORDER BY ABS(p.longitude - :longitude)'
+        )->setParameter('longitude', $longitude)->setMaxResults(1);
+        $found = $query->getResult();
+
+        if(isset($found[0]) && $found[0] instanceof Location){
+            return $found[0];
         }
         return null;
     }
