@@ -136,14 +136,7 @@ class LocationsControllerTest extends WebTestCase
         $client = $this->getClient();
         $client->request('GET', '/locations?postcode=bh19');
 
-        $response = $client->getResponse();
-        $this->assertTrue($response->isOk());
-
-        $data = $response->getContent();
-        $this->assertJson($data);
-
-        $result = json_decode($data, true);
-        $this->assertIsArray($result);
+        $result = $this->assertOkResponseAndGetResult($client);
 
         //do we have a result
         $this->assertArrayHasKey('result', $result['data']);
@@ -158,5 +151,21 @@ class LocationsControllerTest extends WebTestCase
        return static::createClient([], [
             'accept' => 'application/json',
         ]);
+    }
+
+    /**
+     * @param KernelBrowser $client
+     * @return array[]
+     */
+    private function assertOkResponseAndGetResult(KernelBrowser $client){
+        $response = $client->getResponse();
+        $this->assertTrue($response->isOk());
+
+        $data = $response->getContent();
+        $this->assertJson($data);
+
+        $result = json_decode($data, true);
+        $this->assertIsArray($result);
+        return $result;
     }
 }
