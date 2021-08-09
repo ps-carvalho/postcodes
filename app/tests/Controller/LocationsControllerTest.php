@@ -2,15 +2,14 @@
 
 namespace App\Tests\Controller;
 
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class LocationsControllerTest extends WebTestCase
 {
     public function testLocationWithNoParameters()
     {
-        $client = static::createClient([], [
-            'accept'       => 'application/json',
-        ]);
+        $client = $this->getClient();
         $client->request('GET', '/locations');
 
         $response = $client->getResponse();
@@ -32,9 +31,7 @@ class LocationsControllerTest extends WebTestCase
 
     public function testLocationByPostCode()
     {
-        $client = static::createClient([], [
-            'accept'       => 'application/json',
-        ]);
+        $client = $this->getClient();
         $client->request('GET', '/locations?postcode=bh192qt');
 
         $response = $client->getResponse();
@@ -55,9 +52,7 @@ class LocationsControllerTest extends WebTestCase
 
     public function testLocationByPartialPostCode()
     {
-        $client = static::createClient([], [
-            'accept'       => 'application/json',
-        ]);
+        $client = $this->getClient();
         $client->request('GET', '/locations?postcode=bh19');
 
         $response = $client->getResponse();
@@ -76,9 +71,7 @@ class LocationsControllerTest extends WebTestCase
 
     public function testLocationByLatitude(){
 
-        $client = static::createClient([], [
-            'accept'       => 'application/json',
-        ]);
+        $client = $this->getClient();
         $client->request('GET', '/locations?lat=50.606122086912&radius=0.2&unit=mi');
 
         $response = $client->getResponse();
@@ -97,9 +90,7 @@ class LocationsControllerTest extends WebTestCase
 
     public function testLocationByLongitude(){
 
-        $client = static::createClient([], [
-            'accept'       => 'application/json',
-        ]);
+        $client = $this->getClient();
         $client->request('GET', '/locations?long=-1.9708572830129&radius=0.2&unit=mi');
 
         $response = $client->getResponse();
@@ -117,18 +108,14 @@ class LocationsControllerTest extends WebTestCase
     }
 
     public function testLocationByLatitudeAndLongitude(){
-        $client = static::createClient([], [
-            'accept'       => 'application/json',
-        ]);
+        $client = $this->getClient();
         $client->request('GET', '/locations?lat=50.606122086912&long=-1.9708572830129');
         $response = $client->getResponse();
         $this->assertTrue( $response->isClientError() );
     }
 
     public function testLocationByPartialPostcodeAndRadius(){
-        $client = static::createClient([], [
-            'accept'       => 'application/json',
-        ]);
+        $client = $this->getClient();
         $client->request('GET', '/locations?postcode=bh19');
 
         $response = $client->getResponse();
@@ -146,9 +133,7 @@ class LocationsControllerTest extends WebTestCase
     }
 
     public function testLocationByPartialPostcodeAndRadiusAndUnits(){
-        $client = static::createClient([], [
-            'accept'       => 'application/json',
-        ]);
+        $client = $this->getClient();
         $client->request('GET', '/locations?postcode=bh19');
 
         $response = $client->getResponse();
@@ -163,5 +148,15 @@ class LocationsControllerTest extends WebTestCase
         //do we have a result
         $this->assertArrayHasKey('result', $result['data']);
         $this->assertIsArray( $result['data']['result']);
+    }
+
+    /**
+     * @return KernelBrowser
+     */
+    private function getClient(): KernelBrowser
+    {
+       return static::createClient([], [
+            'accept' => 'application/json',
+        ]);
     }
 }
