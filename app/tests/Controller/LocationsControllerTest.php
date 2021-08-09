@@ -12,17 +12,7 @@ class LocationsControllerTest extends WebTestCase
         $client = $this->getClient();
         $client->request('GET', '/locations');
 
-        $response = $client->getResponse();
-        $this->assertTrue($response->isOk());
-
-        $data = $response->getContent();
-        $this->assertJson($data);
-
-        $result = json_decode($data, true);
-        $this->assertIsArray($result);
-
-        //lets ensure we have a default data set.
-        $this->assertArrayHasKey('data', $result);
+        $result = $this->assertOkResponseAndGetResult($client);
 
         //lets have not searched for anything
         $this->assertArrayHasKey('info', $result['data']);
@@ -34,15 +24,7 @@ class LocationsControllerTest extends WebTestCase
         $client = $this->getClient();
         $client->request('GET', '/locations?postcode=bh192qt');
 
-        $response = $client->getResponse();
-        $this->assertTrue($response->isOk());
-
-        $data = $response->getContent();
-        $this->assertJson($data);
-
-        $result = json_decode($data, true);
-        $this->assertIsArray($result);
-        $this->assertArrayHasKey('data', $result);
+        $result = $this->assertOkResponseAndGetResult($client);
 
         // do we have a result
         $this->assertArrayHasKey('result', $result['data']);
@@ -55,14 +37,7 @@ class LocationsControllerTest extends WebTestCase
         $client = $this->getClient();
         $client->request('GET', '/locations?postcode=bh19');
 
-        $response = $client->getResponse();
-        $this->assertTrue($response->isOk());
-
-        $data = $response->getContent();
-        $this->assertJson($data);
-
-        $result = json_decode($data, true);
-        $this->assertIsArray($result);
+        $result = $this->assertOkResponseAndGetResult($client);
 
         //do we have a result
         $this->assertArrayHasKey('result', $result['data']);
@@ -74,14 +49,7 @@ class LocationsControllerTest extends WebTestCase
         $client = $this->getClient();
         $client->request('GET', '/locations?lat=50.606122086912&radius=0.2&unit=mi');
 
-        $response = $client->getResponse();
-        $this->assertTrue($response->isOk());
-
-        $data = $response->getContent();
-        $this->assertJson($data);
-
-        $result = json_decode($data, true);
-        $this->assertIsArray($result);
+        $result = $this->assertOkResponseAndGetResult($client);
 
         //do we have a result
         $this->assertArrayHasKey('result', $result['data']);
@@ -93,14 +61,7 @@ class LocationsControllerTest extends WebTestCase
         $client = $this->getClient();
         $client->request('GET', '/locations?long=-1.9708572830129&radius=0.2&unit=mi');
 
-        $response = $client->getResponse();
-        $this->assertTrue($response->isOk());
-
-        $data = $response->getContent();
-        $this->assertJson($data);
-
-        $result = json_decode($data, true);
-        $this->assertIsArray($result);
+        $result = $this->assertOkResponseAndGetResult($client);
 
         //do we have a result
         $this->assertArrayHasKey('result', $result['data']);
@@ -118,14 +79,7 @@ class LocationsControllerTest extends WebTestCase
         $client = $this->getClient();
         $client->request('GET', '/locations?postcode=bh19');
 
-        $response = $client->getResponse();
-        $this->assertTrue($response->isOk());
-
-        $data = $response->getContent();
-        $this->assertJson($data);
-
-        $result = json_decode($data, true);
-        $this->assertIsArray($result);
+        $result = $this->assertOkResponseAndGetResult($client);
 
         //do we have a result
         $this->assertArrayHasKey('result', $result['data']);
