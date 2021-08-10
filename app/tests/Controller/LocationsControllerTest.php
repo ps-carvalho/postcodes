@@ -47,7 +47,7 @@ class LocationsControllerTest extends WebTestCase
     public function testLocationByLatitude(){
 
         $client = $this->getClient();
-        $client->request('GET', '/locations?lat=50.606122086912&radius=0.2&unit=mi');
+        $client->request('GET', '/locations?lat=50.606122086912');
 
         $result = $this->assertOkResponseAndGetResult($client);
 
@@ -56,16 +56,60 @@ class LocationsControllerTest extends WebTestCase
         $this->assertIsArray( $result['data']['result']);
     }
 
-    public function testLocationByLongitude(){
+    public function testLocationByLatitudeAndRadius(){
 
         $client = $this->getClient();
-        $client->request('GET', '/locations?long=-1.9708572830129&radius=0.2&unit=mi');
+        $client->request('GET', '/locations?lat=50.606122086912&radius=1');
 
         $result = $this->assertOkResponseAndGetResult($client);
 
         //do we have a result
         $this->assertArrayHasKey('result', $result['data']);
         $this->assertIsArray( $result['data']['result']);
+        $this->assertCount(200, $result['data']['result']);
+
+        $client->request('GET', '/locations?lat=50.606122086912&radius=0.2');
+        $result = $this->assertOkResponseAndGetResult($client);
+        $this->assertCount(32, $result['data']['result']);
+
+        $client->request('GET', '/locations?lat=50.606122086912&radius=0.02');
+        $result = $this->assertOkResponseAndGetResult($client);
+        $this->assertCount(1, $result['data']['result']);
+    }
+
+    public function testLocationByLongitude(){
+
+        $client = $this->getClient();
+        $client->request('GET', '/locations?long=-1.9708572830129');
+
+        $result = $this->assertOkResponseAndGetResult($client);
+
+        //do we have a result
+        $this->assertArrayHasKey('result', $result['data']);
+        $this->assertIsArray( $result['data']['result']);
+    }
+
+    public function testLocationByLongitudeAndRadius(){
+
+        $client = $this->getClient();
+        $client->request('GET', '/locations?long=-1.9708572830129&radius=1');
+
+        $result = $this->assertOkResponseAndGetResult($client);
+
+        //do we have a result
+        $this->assertArrayHasKey('result', $result['data']);
+        $this->assertIsArray( $result['data']['result']);
+
+        $this->assertCount(200, $result['data']['result']);
+
+        $client->request('GET', '/locations?long=-1.9708572830129&radius=0.2');
+        $result = $this->assertOkResponseAndGetResult($client);
+        $this->assertCount(32, $result['data']['result']);
+
+        $client->request('GET', '/locations?long=-1.9708572830129&radius=0.02');
+        $result = $this->assertOkResponseAndGetResult($client);
+        $this->assertCount(1, $result['data']['result']);
+
     }
 
     public function testLocationByLatitudeAndLongitude(){
@@ -75,26 +119,26 @@ class LocationsControllerTest extends WebTestCase
         $this->assertTrue( $response->isClientError() );
     }
 
-    public function testLocationByPartialPostcodeAndRadius(){
+    public function testLocationByLongitudeAndUnitIsKm(){
+
         $client = $this->getClient();
-        $client->request('GET', '/locations?postcode=bh19');
+        $client->request('GET', '/locations?long=-1.9708572830129&radius=0.5&unit=km');
 
         $result = $this->assertOkResponseAndGetResult($client);
 
         //do we have a result
         $this->assertArrayHasKey('result', $result['data']);
         $this->assertIsArray( $result['data']['result']);
-    }
 
-    public function testLocationByPartialPostcodeAndRadiusAndUnits(){
-        $client = $this->getClient();
-        $client->request('GET', '/locations?postcode=bh19');
+        $this->assertCount(83, $result['data']['result']);
 
+        $client->request('GET', '/locations?long=-1.9708572830129&radius=0.5&unit=mi');
         $result = $this->assertOkResponseAndGetResult($client);
 
-        //do we have a result
         $this->assertArrayHasKey('result', $result['data']);
         $this->assertIsArray( $result['data']['result']);
+
+        $this->assertCount(163, $result['data']['result']);
     }
 
     /**
