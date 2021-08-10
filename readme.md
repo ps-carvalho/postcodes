@@ -20,13 +20,11 @@ composer install
 
 php bin/console --env=local doctrine:database:create
 
-php bin/console --env=test doctrine:database:create
 
 ### **Run migrations and create Test Schema**
 
 symfony console --env=local doctrine:migrations:migrate
 
-symfony console --env=test doctrine:migrations:migrate
 
 ### **Download Postcodes**
 
@@ -43,6 +41,7 @@ As an alternative you can pass and argument and choose a number between 1 and 12
 This is better for quick tests.
 
 ### **Run Unit test**
+ensure that you have the postcodes starting with BH19 in the database in case you havent uploaded everything so that you can run the unit tests.
 
 php ./vendor/bin/phpunit
 
