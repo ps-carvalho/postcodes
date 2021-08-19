@@ -21,7 +21,7 @@ composer install
 php bin/console --env=local doctrine:database:create
 
 
-### **Run migrations and create Test Schema**
+### **Run migrations Schema**
 
 symfony console --env=local doctrine:migrations:migrate
 
