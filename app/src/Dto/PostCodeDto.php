@@ -62,18 +62,18 @@ class PostCodeDto extends Dto
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPostCode(): string
+    public function getPostCode(): ?string
     {
         return $this->postCode;
     }
 
     /**
-     * @param string $postCode
+     * @param string|null $postCode
      * @return PostCodeDto
      */
-    public function setPostCode(string $postCode): PostCodeDto
+    public function setPostCode(string|null $postCode): PostCodeDto
     {
         $this->postCode = $postCode;
         return $this;
