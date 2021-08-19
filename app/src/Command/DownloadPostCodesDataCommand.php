@@ -30,8 +30,6 @@ class DownloadPostCodesDataCommand extends Command
         $this->params = $params;
     }
 
-
-
     protected function configure(): void
     {
         $this
@@ -43,54 +41,26 @@ class DownloadPostCodesDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
-//
-//        if ($arg1) {
-//            $io->note(sprintf('You passed an argument: %s', $arg1));
-//        }
-//
-//        if ($input->getOption('option1')) {
-//            // ...
-//        }
 
-
-//        $command = $this->getApplication()->find('doctrine:migrations:migrate');
-//        $arguments = [];
-//        $greetInput = new ArrayInput($arguments);
-//        $returnCode = $command->run($greetInput, $output);
-
-
-        $result = $this->downloadData();
-
-//        if($result === 'download completed'){
-//            $io->note($result);
-//            $command = $this->getApplication()->find('PostCodes:importPostCodesData');
-//            $arguments = [];
-//            $greetInput = new ArrayInput($arguments);
-//            $returnCode = $command->run($greetInput, $output);
-//        }
+        $this->downloadData();
 
         $io->success("Process completed");
 
         return Command::SUCCESS;
     }
 
-    private function downloadData()
+    private function downloadData(): void
     {
         $response = $this->client->request(
             'GET',
             'https://api.os.uk/downloads/v1/products/CodePointOpen/downloads'
         );
-        $statusCode = $response->getStatusCode();
-        $contentType = $response->getHeaders()['content-type'][0];
-        $content = $response->getContent();
         $content = $response->toArray();
         $url = $content[0]['url'];
         $this->getCSVPackage($url);
-        return "download completed";
     }
 
-    private function getCSVPackage(string $endpoint)
+    private function getCSVPackage(string $endpoint): void
     {
         $response = $this->client->request(
             'GET',
@@ -112,6 +82,5 @@ class DownloadPostCodesDataCommand extends Command
         } else {
             echo 'Error';
         }
-        return true;
     }
 }

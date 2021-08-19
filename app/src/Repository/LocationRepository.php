@@ -38,7 +38,7 @@ class LocationRepository extends ServiceEntityRepository
     /**
      * @return Location[]
      */
-    public function findAllLocationsByProximity($latitude, $longitude, $radius, $units = 'mi')
+    public function findAllLocationsByProximity($latitude, $longitude, $radius, $units = 'mi'): array
     {
         $found = false;
 
@@ -89,12 +89,13 @@ class LocationRepository extends ServiceEntityRepository
        return $resultData;
     }
 
-    private function findLocationByLatitude($latitude){
+    private function findLocationByLatitude($latitude): ?Location
+    {
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT p
-        FROM App\Entity\Location p 
-        ORDER BY ABS(p.latitude - :latitude)'
+                  FROM App\Entity\Location p 
+                  ORDER BY ABS(p.latitude - :latitude)'
         )->setParameter('latitude', $latitude)->setMaxResults(1);
         $found = $query->getResult();
 
@@ -104,12 +105,13 @@ class LocationRepository extends ServiceEntityRepository
         return null;
     }
 
-    private function findLocationByLongitude($longitude){
+    private function findLocationByLongitude($longitude): ?Location
+    {
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT p
-        FROM App\Entity\Location p 
-        ORDER BY ABS(p.longitude - :longitude)'
+                  FROM App\Entity\Location p 
+                  ORDER BY ABS(p.longitude - :longitude)'
         )->setParameter('longitude', $longitude)->setMaxResults(1);
         $found = $query->getResult();
 

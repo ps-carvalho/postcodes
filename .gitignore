@@ -11,3 +11,4 @@
 
 /mysql/*
 /.idea/
+/.php-cs-fixer.cache

@@ -23,9 +23,9 @@ class Dto
 
     /**
      * @param Request $request
-     * @return PostCodeDto
+     * @return Dto
      */
-    public function setRequest(Request $request): PostCodeDto
+    public function setRequest(Request $request): Dto
     {
         $this->request = $request;
         return $this;

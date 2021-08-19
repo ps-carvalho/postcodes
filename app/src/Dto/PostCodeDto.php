@@ -62,18 +62,18 @@ class PostCodeDto extends Dto
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getPostCode()
+    public function getPostCode(): string
     {
         return $this->postCode;
     }
 
     /**
-     * @param mixed $postCode
+     * @param string $postCode
      * @return PostCodeDto
      */
-    public function setPostCode($postCode)
+    public function setPostCode(string $postCode): PostCodeDto
     {
         $this->postCode = $postCode;
         return $this;
@@ -98,7 +98,7 @@ class PostCodeDto extends Dto
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getLongitude() : float
     {
@@ -106,7 +106,7 @@ class PostCodeDto extends Dto
     }
 
     /**
-     * @param mixed $longitude
+     * @param float $longitude
      * @return PostCodeDto
      */
     public function setLongitude(float $longitude)
@@ -116,7 +116,7 @@ class PostCodeDto extends Dto
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getRadius() : float
     {
